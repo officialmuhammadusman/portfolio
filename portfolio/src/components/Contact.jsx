@@ -1,13 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useContext, useRef, useEffect } from 'react';
-import { Mail, Phone, MapPin, Github, Linkedin, Download, Send } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Github, 
+  Linkedin, 
+  Download, 
+  Send, 
+  MessageCircle,
+  User,
+  AtSign,
+  FileText,
+  CheckCircle,
+  ArrowRight,
+  Globe,
+  Calendar,
+  Zap
+} from 'lucide-react';
 import { motion, useInView, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ThemeContext } from './ThemeContext';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Contact = () => {
-  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,17 +28,18 @@ const Contact = () => {
     message: '',
   });
   const [isSending, setIsSending] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
 
   const ref = useRef(null);
-  const isInView = useInView(ref, { threshold: 0.1, margin: "-100px" });
+  const isInView = useInView(ref, { threshold: 0.1, margin: "-50px" });
   const controls = useAnimation();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   useEffect(() => {
     if (isInView) {
@@ -43,71 +57,128 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSending(true);
-    // Open Gmail compose window with prefilled recipient, subject, and body
+    
+    // Create Gmail compose URL
     const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('official.muhammadusman01@gmail.com')}&su=${encodeURIComponent(formData.subject || 'Contact Form Submission')}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
     window.open(gmailLink, '_blank');
 
-    // Show toast and reset form after a short delay
+    // Reset form after delay
     setTimeout(() => {
       setFormData({ name: '', email: '', subject: '', message: '' });
       setIsSending(false);
-      toast.success("Your message is ready to send! Please click 'Send' in your Gmail tab.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: theme === 'redblack' ? 'dark' : theme,
-      });
     }, 1000);
   };
 
   const handleEmailClick = () => {
-    // Open Gmail compose window with prefilled recipient
     const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('official.muhammadusman01@gmail.com')}`;
     window.open(gmailLink, '_blank');
   };
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "official.muhammadusman01@gmail.com",
+      action: handleEmailClick
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      value: "(0313) 526-3300",
+      href: "tel:+923135263300"
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Abbottabad, Pakistan"
+    },
+    {
+      icon: Github,
+      label: "GitHub",
+      value: "officialmuhammadusman",
+      href: "https://github.com/officialmuhammadusman"
+    },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      value: "muhammadusman-webdev",
+      href: "https://www.linkedin.com/in/muhammadusman-webdev"
+    }
+  ];
+
+  const formFields = [
+    {
+      id: "name",
+      label: "Full Name",
+      type: "text",
+      placeholder: "Enter your full name",
+      icon: User,
+      required: true
+    },
+    {
+      id: "email",
+      label: "Email Address",
+      type: "email",
+      placeholder: "your.email@example.com",
+      icon: AtSign,
+      required: true
+    },
+    {
+      id: "subject",
+      label: "Subject",
+      type: "text",
+      placeholder: "What's this about?",
+      icon: FileText,
+      required: true
+    },
+    {
+      id: "message",
+      label: "Message",
+      type: "textarea",
+      placeholder: "Tell me about your project or question...",
+      icon: MessageCircle,
+      rows: 5,
+      required: true
+    }
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2
+        staggerChildren: 0.1,
+        delayChildren: 0.05
       }
     }
   };
 
   const headerVariants = {
-    hidden: { opacity: 0, y: -50, scale: 0.8 },
+    hidden: { opacity: 0, y: -30, scale: 0.9 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 100, scale: 0.8, rotateX: -15 },
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      rotateX: 0,
-      transition: { duration: 0.8, ease: "easeOut", type: "spring", stiffness: 100 }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.9 },
+    hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
+      x: 0,
+      transition: { duration: 0.3, ease: "easeOut" }
     }
   };
 
@@ -115,227 +186,416 @@ const Contact = () => {
     <motion.section
       ref={ref}
       id="contact"
-      className="py-20 bg-gradient-to-br from-light-background via-light-card to-light-background dark:from-dark-background dark:via-dark-card dark:to-dark-background redblack:from-redblack-background redblack:via-redblack-card redblack:to-redblack-background relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-24 bg-[#0a0a0a] relative overflow-hidden"
       initial="hidden"
       animate={controls}
       variants={containerVariants}
     >
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme === 'redblack' ? 'dark' : theme}
-      />
-      {/* Animated Background Elements */}
+      {/* Background Grid */}
       <motion.div
         className="absolute inset-0 opacity-10"
         style={{ y, opacity }}
       >
-        <div className="absolute top-32 left-20 w-72 h-72 bg-gradient-to-br from-light-primary/30 to-light-secondary/30 dark:from-dark-primary/30 dark:to-dark-secondary/30 redblack:from-redblack-primary/30 redblack:to-redblack-primaryLight/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-32 right-20 w-96 h-96 bg-gradient-to-br from-light-secondary/30 to-light-primary/30 dark:from-dark-secondary/30 dark:to-dark-primary/30 redblack:from-redblack-primaryLight/30 redblack:to-redblack-primary/30 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-light-primary/20 to-light-secondary/20 dark:from-dark-primary/20 dark:to-dark-secondary/20 redblack:from-redblack-primary/20 redblack:to-redblack-primaryLight/20 rounded-full blur-3xl"></div>
+        <div className="w-full h-full bg-[linear-gradient(rgba(30,41,59,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(30,41,59,0.1)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* Floating geometric shapes */}
+        <motion.div
+          className="absolute top-1/4 right-1/4 w-8 h-8 sm:w-12 sm:h-12 border-2 border-[#3b82f6]/20 rounded-lg"
+          animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 left-1/3 w-6 h-6 sm:w-8 sm:h-8 bg-[#3b82f6]/20 rounded-full"
+          animate={{ y: [-10, 10, -10], scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="text-center mb-16" variants={headerVariants}>
-          <motion.h2
-            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-light-primary via-light-secondary to-light-primary dark:from-dark-primary dark:via-dark-secondary dark:to-dark-primary redblack:from-redblack-primary redblack:via-redblack-primaryLight redblack:to-redblack-primary bg-clip-text text-transparent"
-            style={{ backgroundSize: '200% 200%' }}
-            initial={{ backgroundPosition: "0% 50%" }}
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          >
-            Let's Work Together
-          </motion.h2>
+        {/* Header Section */}
+        <motion.div 
+          className="text-center mb-8 sm:mb-12 lg:mb-20"
+          variants={headerVariants}
+        >
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight mx-auto rounded-full mt-4 relative overflow-hidden"
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 96, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            className="inline-flex items-center justify-center space-x-2 sm:space-x-3 mb-4 sm:mb-6"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-              animate={{ x: [-100, 200] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 1, ease: "easeInOut" }}
-            />
+              className="p-2 sm:p-3 bg-[#1e293b]/50 rounded-xl backdrop-blur-sm border border-[#1e293b]/50"
+              whileHover={{ rotate: 15, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-[#3b82f6]" />
+            </motion.div>
+            <motion.h2
+              className="text-2xl sm:text-4xl lg:text-6xl font-bold text-[#f8fafc] font-poppins"
+            >
+              Let's Connect
+            </motion.h2>
           </motion.div>
+
+          <motion.div
+            className="w-16 sm:w-24 lg:w-32 h-1 bg-[#3b82f6] mx-auto rounded-full mb-4 sm:mb-6"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "auto", opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          />
+
           <motion.p
-            className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary mt-4 max-w-2xl mx-auto"
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } }}}
+            className="text-sm sm:text-base lg:text-xl text-[#94a3b8] font-inter max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-4"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { duration: 0.3, delay: 0.2 }
+              }
+            }}
           >
-            I'm excited to collaborate on innovative projects. Reach out to discuss opportunities!
+            Ready to bring your ideas to life? Let's discuss your next project and create something amazing together.
           </motion.p>
         </motion.div>
 
-        <motion.div
-          className="grid lg:grid-cols-2 gap-12"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.4, delayChildren: 1 } } }}
-        >
-          {/* Contact Info Card */}
-          <motion.div
-            className="bg-light-card/80 dark:bg-dark-card/80 redblack:bg-redblack-card/80 p-8 rounded-2xl shadow-glass hover:shadow-glass-lg transition-all duration-500 backdrop-blur-sm border border-light-textSecondary/10 dark:border-dark-textSecondary/10 redblack:border-redblack-textSecondary/10"
+        {/* Main Content */}
+        <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-5 lg:gap-12">
+          {/* Contact Information - Mobile: Full width, Desktop: 2 columns */}
+          <motion.div 
+            className="lg:col-span-2"
             variants={cardVariants}
-            while
-
-Hover={{ scale: 1.02, y: -10, transition: { duration: 0.3 } }}
           >
-            <motion.h3
-              className="text-2xl font-bold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary mb-6"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-            >
-              Send Me a Message
-            </motion.h3>
+            {/* Quick Contact Card */}
             <motion.div
-              className="space-y-6"
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 1.2 } } }}
+              className="bg-[#1e293b]/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-[#1e293b]/50 backdrop-blur-sm mb-6 sm:mb-8"
+              whileHover={{ y: -4 }}
             >
-              {[
-                { icon: Mail, onClick: handleEmailClick, text: "official.muhammadusman01@gmail.com" },
-                { icon: Phone, href: "tel:+923135263300", text: "(0313) 526-3300" },
-                { icon: MapPin, text: "Abbottabad, Pakistan" },
-                { icon: Github, href: "https://github.com/officialmuhammadusman", text: "github.com/officialmuhammadusman", target: "_blank" },
-                { icon: Linkedin, href: "https://www.linkedin.com/in/muhammadusman-webdev", text: "linkedin.com/in/muhammadusman-webdev", target: "_blank" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center space-x-3 group"
-                  variants={itemVariants}
-                  whileHover={{ x: 5, scale: 1.02 }}
-                >
-                  <motion.div
-                    className="flex-shrink-0"
-                    whileHover={{ scale: 1.3, rotate: 360, transition: { duration: 0.5 } }}
-                  >
-                    <item.icon size={24} className="text-light-primary dark:text-dark-primary redblack:text-redblack-primary" />
-                  </motion.div>
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      target={item.target || "_self"}
-                      rel={item.target ? "noopener noreferrer" : undefined}
-                      className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary group-hover:text-light-primary dark:group-hover:text-dark-primary redblack:group-hover:text-redblack-primary transition-colors duration-300"
-                    >
-                      {item.text}
-                    </a>
-                  ) : item.onClick ? (
-                    <button
-                      onClick={item.onClick}
-                      className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary group-hover:text-light-primary dark:group-hover:text-dark-primary redblack:group-hover:text-redblack-primary transition-colors duration-300 text-left"
-                    >
-                      {item.text}
-                    </button>
-                  ) : (
-                    <span className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary group-hover:text-light-primary dark:group-hover:text-dark-primary redblack:group-hover:text-redblack-primary transition-colors duration-300">
-                      {item.text}
-                    </span>
-                  )}
-                </motion.div>
-              ))}
-            </motion.div>
-            <motion.div
-              className="mt-8"
-              variants={itemVariants}
-            >
-              <motion.a
-                href="/cv.pdf"
-                download
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight text-white rounded-full shadow-lg"
-                whileHover={{ scale: 1.02, y: -2, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}
-                whileTap={{ scale: 0.98 }}
+              <motion.div
+                className="flex items-center space-x-3 mb-6"
+                variants={itemVariants}
               >
-                <Download size={20} className="mr-2" />
-                <span>Download Resume</span>
-              </motion.a>
+                <motion.div
+                  className="p-3 bg-[#3b82f6] rounded-xl shadow-sm"
+                  whileHover={{ scale: 1.1, rotate: 10 }}
+                >
+                  <Zap className="w-6 h-6 text-[#f8fafc]" />
+                </motion.div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-[#f8fafc] font-poppins">
+                    Quick Contact
+                  </h3>
+                  <p className="text-sm text-[#94a3b8] font-inter">
+                    Get in touch instantly
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Contact Methods */}
+              <div className="space-y-4">
+                {contactInfo.slice(0, 3).map((contact, index) => (
+                  <motion.div
+                    key={index}
+                    className="group"
+                    variants={itemVariants}
+                    whileHover={{ x: 5 }}
+                  >
+                    {contact.action || contact.href ? (
+                      contact.action ? (
+                        <button
+                          onClick={contact.action}
+                          className="w-full flex items-center space-x-4 p-3 sm:p-4 rounded-xl hover:bg-[#1e293b]/80 transition-all duration-300"
+                        >
+                          <ContactItem contact={contact} />
+                        </button>
+                      ) : (
+                        <a
+                          href={contact.href}
+                          target={contact.href.startsWith('http') ? '_blank' : '_self'}
+                          rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="w-full flex items-center space-x-4 p-3 sm:p-4 rounded-xl hover:bg-[#1e293b]/80 transition-all duration-300"
+                        >
+                          <ContactItem contact={contact} />
+                        </a>
+                      )
+                    ) : (
+                      <div className="w-full flex items-center space-x-4 p-3 sm:p-4 rounded-xl">
+                        <ContactItem contact={contact} />
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div
+              className="bg-[#1e293b]/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-[#1e293b]/50 backdrop-blur-sm"
+              whileHover={{ y: -4 }}
+            >
+              <motion.h3
+                className="text-lg sm:text-xl font-bold text-[#f8fafc] font-poppins mb-6 flex items-center space-x-2"
+                variants={itemVariants}
+              >
+                <Globe className="w-5 h-5 text-[#94a3b8]" />
+                <span>Connect Online</span>
+              </motion.h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {contactInfo.slice(3).map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 p-4 rounded-xl hover:bg-[#1e293b]/80 transition-all duration-300 border border-[#1e293b]/50"
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <motion.div
+                      className="p-2 rounded-lg bg-[#3b82f6] shadow-sm"
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                    >
+                      <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#f8fafc]" />
+                    </motion.div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-[#f8fafc] font-poppins">
+                        {social.label}
+                      </p>
+                      <p className="text-xs text-[#94a3b8] font-inter truncate">
+                        {social.value}
+                      </p>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Resume Download */}
+              <motion.div
+                className="mt-6 pt-6 border-t border-[#1e293b]/50"
+                variants={itemVariants}
+              >
+                <motion.a
+                  href="/cv.pdf"
+                  download
+                  className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-[#3b82f6] text-[#f8fafc] rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Download Resume</span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.a>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Contact Form Card */}
-          <motion.div
-            className="bg-light-card/80 dark:bg-dark-card/80 redblack:bg-redblack-card/80 p-8 rounded-2xl shadow-glass hover:shadow-glass-lg transition-all duration-500 backdrop-blur-sm border border-light-textSecondary/10 dark:border-dark-textSecondary/10 redblack:border-redblack-textSecondary/10"
+          {/* Contact Form - Mobile: Full width, Desktop: 3 columns */}
+          <motion.div 
+            className="lg:col-span-3"
             variants={cardVariants}
-            whileHover={{ scale: 1.02, y: -10, transition: { duration: 0.3 } }}
           >
-            <motion.h3
-              className="text-2xl font-bold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary mb-6"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
+            <motion.div
+              className="bg-[#1e293b]/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-[#1e293b]/50 backdrop-blur-sm"
+              whileHover={{ y: -4 }}
             >
-              Contact Form
-            </motion.h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {[
-                { id: "name", label: "Name", type: "text", placeholder: "Your Name" },
-                { id: "email", label: "Email", type: "email", placeholder: "Your Email" },
-                { id: "subject", label: "Subject", type: "text", placeholder: "Subject" },
-                { id: "message", label: "Message", type: "textarea", placeholder: "Your Message", rows: 5 },
-              ].map((field, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="group"
-                >
-                  <label
-                    htmlFor={field.id}
-                    className="block text-sm font-medium text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary mb-2"
-                  >
-                    {field.label}
-                  </label>
-                  {field.type === "textarea" ? (
-                    <motion.textarea
-                      id={field.id}
-                      name={field.id}
-                      value={formData[field.id]}
-                      onChange={handleInputChange}
-                      required
-                      rows={field.rows}
-                      className="w-full px-4 py-3 bg-light-background/80 dark:bg-dark-background/80 redblack:bg-redblack-background/80 border border-light-textSecondary/50 dark:border-dark-textSecondary/50 redblack:border-redblack-textSecondary/50 rounded-lg text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary focus:border-light-primary dark:focus:border-dark-primary redblack:focus:border-redblack-primary focus:ring-2 focus:ring-light-primary/50 dark:focus:ring-dark-primary/50 redblack:focus:ring-redblack-primary/50 transition-all duration-300 backdrop-blur-sm"
-                      placeholder={field.placeholder}
-                      whileFocus={{ scale: 1.01, borderColor: "rgba(var(--color-primary), 1)" }}
-                      whileHover={{ scale: 1.01 }}
-                    />
-                  ) : (
-                    <motion.input
-                      type={field.type}
-                      id={field.id}
-                      name={field.id}
-                      value={formData[field.id]}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-light-background/80 dark:bg-dark-background/80 redblack:bg-redblack-background/80 border border-light-textSecondary/50 dark:border-dark-textSecondary/50 redblack:border-redblack-textSecondary/50 rounded-lg text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary focus:border-light-primary dark:focus:border-dark-primary redblack:focus:border-redblack-primary focus:ring-2 focus:ring-light-primary/50 dark:focus:ring-dark-primary/50 redblack:focus:ring-redblack-primary/50 transition-all duration-300 backdrop-blur-sm"
-                      placeholder={field.placeholder}
-                      whileFocus={{ scale: 1.01, borderColor: "rgba(var(--color-primary), 1)" }}
-                      whileHover={{ scale: 1.01 }}
-                    />
-                  )}
-                </motion.div>
-              ))}
               <motion.div
+                className="flex items-center space-x-3 mb-8"
                 variants={itemVariants}
               >
-                <motion.button
-                  type="submit"
-                  disabled={isSending}
-                  className={`w-full px-6 py-3 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight text-white rounded-lg shadow-lg flex items-center justify-center space-x-2 ${isSending ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  whileHover={{ scale: isSending ? 1 : 1.02, y: isSending ? 0 : -2, boxShadow: isSending ? 'none' : '0 20px 40px rgba(0,0,0,0.2)' }}
-                  whileTap={{ scale: isSending ? 1 : 0.98 }}
+                <motion.div
+                  className="p-3 bg-[#3b82f6] rounded-xl shadow-sm"
+                  whileHover={{ scale: 1.1, rotate: 10 }}
                 >
-                  <Send size={20} />
-                  <span>{isSending ? 'Opening...' : 'Send Message'}</span>
-                </motion.button>
+                  <Send className="w-6 h-6 text-[#f8fafc]" />
+                </motion.div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#f8fafc] font-poppins">
+                    Send Message
+                  </h3>
+                  <p className="text-sm sm:text-base text-[#94a3b8] font-inter">
+                    Tell me about your project
+                  </p>
+                </div>
               </motion.div>
-            </form>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {formFields.map((field, index) => (
+                  <motion.div
+                    key={field.id}
+                    variants={itemVariants}
+                    className="relative"
+                  >
+                    <label
+                      htmlFor={field.id}
+                      className="block text-sm font-semibold text-[#94a3b8] font-inter mb-2"
+                    >
+                      {field.label} {field.required && <span className="text-red-500">*</span>}
+                    </label>
+                    
+                    <div className="relative">
+                      <motion.div
+                        className="absolute left-3 top-3 sm:top-4 z-10"
+                        animate={{ 
+                          scale: focusedField === field.id ? 1.1 : 1,
+                          color: focusedField === field.id ? '#3b82f6' : '#94a3b8'
+                        }}
+                      >
+                        <field.icon className="w-5 h-5" />
+                      </motion.div>
+
+                      {field.type === 'textarea' ? (
+                        <motion.textarea
+                          id={field.id}
+                          name={field.id}
+                          value={formData[field.id]}
+                          onChange={handleInputChange}
+                          onFocus={() => setFocusedField(field.id)}
+                          onBlur={() => setFocusedField(null)}
+                          required={field.required}
+                          rows={field.rows}
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-[#1e293b]/50 border-2 border-[#1e293b]/50 rounded-xl text-[#f8fafc] placeholder-[#94a3b8] focus:border-[#3b82f6] focus:ring-0 transition-all duration-300 backdrop-blur-sm resize-none"
+                          placeholder={field.placeholder}
+                          whileFocus={{ 
+                            scale: 1.01, 
+                            borderColor: '#3b82f6',
+                            boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                          }}
+                        />
+                      ) : (
+                        <motion.input
+                          type={field.type}
+                          id={field.id}
+                          name={field.id}
+                          value={formData[field.id]}
+                          onChange={handleInputChange}
+                          onFocus={() => setFocusedField(field.id)}
+                          onBlur={() => setFocusedField(null)}
+                          required={field.required}
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-[#1e293b]/50 border-2 border-[#1e293b]/50 rounded-xl text-[#f8fafc] placeholder-[#94a3b8] focus:border-[#3b82f6] focus:ring-0 transition-all duration-300 backdrop-blur-sm"
+                          placeholder={field.placeholder}
+                          whileFocus={{ 
+                            scale: 1.01, 
+                            borderColor: '#3b82f6',
+                            boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                          }}
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+
+                <motion.div
+                  variants={itemVariants}
+                  className="pt-4"
+                >
+                  <motion.button
+                    type="submit"
+                    disabled={isSending}
+                    className={`w-full flex items-center justify-center space-x-3 px-8 py-4 bg-[#3b82f6] text-[#f8fafc] rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 font-inter ${
+                      isSending ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                    whileHover={{ scale: isSending ? 1 : 1.02, y: isSending ? 0 : -2 }}
+                    whileTap={{ scale: isSending ? 1 : 0.98 }}
+                  >
+                    {isSending ? (
+                      <>
+                        <motion.div
+                          className="w-5 h-5 border-2 border-[#f8fafc]/30 border-t-[#f8fafc] rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
+                        />
+                        <span>Opening Gmail...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        <span>Send Message</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </motion.button>
+
+                  <motion.p
+                    className="text-xs sm:text-sm text-[#94a3b8] font-inter mt-3 text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Your default email client will open with the message ready to send
+                  </motion.p>
+                </motion.div>
+              </form>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Bottom CTA Section */}
+        <motion.div
+          className="mt-12 sm:mt-16 lg:mt-20 text-center"
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.5, delay: 0.5 }
+            }
+          }}
+        >
+          <motion.div
+            className="inline-flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 p-6 sm:p-8 bg-[#1e293b]/50 rounded-2xl border border-[#1e293b]/50 backdrop-blur-sm"
+            whileHover={{ scale: 1.02, y: -4 }}
+          >
+            <div className="flex items-center space-x-4">
+              <motion.div
+                className="p-4 bg-[#3b82f6] rounded-2xl shadow-sm"
+                whileHover={{ scale: 1.1, rotate: 15 }}
+              >
+                <Calendar className="w-8 h-8 text-[#f8fafc]" />
+              </motion.div>
+              <div className="text-left">
+                <h4 className="text-lg sm:text-xl font-bold text-[#f8fafc] font-poppins">
+                  Available for Projects
+                </h4>
+                <p className="text-sm sm:text-base text-[#94a3b8] font-inter">
+                  Currently accepting new opportunities
+                </p>
+              </div>
+            </div>
+            
+            <motion.div
+              className="flex items-center space-x-2 text-[#3b82f6] font-semibold font-inter"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <div className="w-3 h-3 bg-[#3b82f6] rounded-full animate-pulse" />
+              <span className="text-sm sm:text-base">Online Now</span>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
     </motion.section>
   );
 };
+
+// Helper component for contact items
+const ContactItem = ({ contact }) => (
+  <>
+    <motion.div
+      className="p-3 rounded-xl bg-[#3b82f6] shadow-sm"
+      whileHover={{ scale: 1.1, rotate: 5 }}
+    >
+      <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#f8fafc]" />
+    </motion.div>
+    <div className="flex-1 min-w-0 text-left">
+      <p className="text-sm font-medium text-[#94a3b8] font-inter">
+        {contact.label}
+      </p>
+      <p className="text-base sm:text-lg font-semibold text-[#f8fafc] font-poppins truncate group-hover:text-[#3b82f6] transition-colors duration-300">
+        {contact.value}
+      </p>
+    </div>
+    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#94a3b8] group-hover:text-[#3b82f6] group-hover:translate-x-1 transition-all duration-300" />
+  </>
+);
 
 export default Contact;

@@ -1,204 +1,309 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useContext, useEffect } from 'react';
-import { Menu, X, Moon, Sun, User, Code, Briefcase, GraduationCap, Phone } from 'lucide-react';
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
-import { ThemeContext } from './ThemeContext'; // Assuming ThemeContext is defined elsewhere
+import React, { useState, useEffect } from 'react';
+import { Menu, X, User, Code, Briefcase, GraduationCap, Phone, ChevronRight, Sparkles, ExternalLink, Zap, Star, ArrowRight } from 'lucide-react';
 
-const Navigation = ({ activeSection, scrollToSection }) => {
+const Navigation = ({ activeSection = 'hero', scrollToSection = () => {} }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const { scrollY } = useScroll();
+   
+  const [isMobile, setIsMobile] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
-  });
+  // Handle window resize and mobile detection
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    checkIsMobile();
+    handleScroll();
+
+    window.addEventListener('resize', checkIsMobile);
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const navItems = [
-    { id: 'hero', label: 'Home', icon: User },
-    { id: 'about', label: 'About', icon: User },
-    { id: 'skills', label: 'Skills', icon: Code },
-    { id: 'experience', label: 'Experience', icon: Briefcase },
-    { id: 'projects', label: 'Projects', icon: Code },
-    { id: 'education', label: 'Education', icon: GraduationCap },
-    { id: 'contact', label: 'Contact', icon: Phone },
+    { id: 'hero', label: 'Home', icon: User, description: 'Back to top' },
+    { id: 'about', label: 'About', icon: User, description: 'Learn about me' },
+    { id: 'skills', label: 'Skills', icon: Code, description: 'Technical expertise' },
+    { id: 'experience', label: 'Experience', icon: Briefcase, description: 'Work history' },
+    { id: 'projects', label: 'Projects', icon: Code, description: 'Featured work' },
+    { id: 'education', label: 'Education', icon: GraduationCap, description: 'Academic background' },
+    { id: 'contact', label: 'Contact', icon: Phone, description: 'Get in touch' },
   ];
 
-  return (
-    <motion.nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'bg-light-card/95 dark:bg-dark-card/95 redblack:bg-redblack-card/95 backdrop-blur-xl shadow-2xl border-b border-light-textSecondary/10 dark:border-dark-textSecondary/10 redblack:border-redblack-textSecondary/10'
-          : 'bg-light-card/80 dark:bg-dark-card/80 redblack:bg-redblack-card/80 backdrop-blur-md border-b border-light-textSecondary/20 dark:border-dark-textSecondary/20 redblack:border-redblack-textSecondary/20'
-      }`}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay: 2 }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <motion.div
-            className="text-2xl font-bold bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight bg-clip-text text-transparent cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => scrollToSection('hero')}
-          >
-            Muhammad Usman
-          </motion.div>
+  const handleNavClick = (id) => {
+    scrollToSection(id);
+    setIsMenuOpen(false);
+  };
 
-          <div className="hidden md:flex space-x-2 items-center">
-            {navItems.map(({ id, label, icon: Icon }, index) => (
-              <motion.button
-                key={id}
-                onClick={() => scrollToSection(id)}
-                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group ${
-                  activeSection === id
-                    ? 'text-light-primary dark:text-dark-primary redblack:text-redblack-primary'
-                    : 'text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary hover:text-light-primary dark:hover:text-dark-primary redblack:hover:text-redblack-primary'
-                }`}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 2.2 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+  const handleHireMeClick = () => {
+    scrollToSection('contact');
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    
+    const handleClickOutside = (e) => {
+      if (isMenuOpen && !e.target.closest('.mobile-menu') && !e.target.closest('.menu-button')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('click', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <>
+      <nav
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-[#0a0a0a]/95 backdrop-blur-md shadow-lg border-b border-[#1e293b]/60'
+            : 'bg-[#0a0a0a]/80 backdrop-blur-sm border-b border-[#1e293b]/30'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 md:h-18">
+            
+            {/* Logo Section - Always visible */}
+            <div 
+              className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group flex-shrink-0"
+              onClick={() => handleNavClick('hero')}
+            >
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#3b82f6] rounded-xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:rotate-180 group-hover:scale-110">
+                <Sparkles size={16} className="sm:w-5 sm:h-5 text-[#f8fafc]" />
+              </div>
+              <div className="hidden xs:block">
+                <div className="text-lg sm:text-xl font-bold text-[#f8fafc] font-sans">
+                  Muhammad Usman
+                </div>
+                <div className="text-xs text-[#94a3b8] -mt-1 hidden sm:block">
+                  MERN Developer
+                </div>
+              </div>
+              {/* Mobile-only compact logo */}
+              <div className="block xs:hidden">
+                <div className="text-base font-bold text-[#f8fafc]">MU</div>
+              </div>
+            </div>
+
+            {/* Desktop Navigation - Hidden on mobile/tablet */}
+            <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+              {navItems.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => handleNavClick(id)}
+                  className={`relative px-3 xl:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
+                    activeSection === id
+                      ? 'text-[#3b82f6] bg-[#3b82f6]/10'
+                      : 'text-[#94a3b8] hover:text-[#22d3ee] hover:bg-[#1e293b]/50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <Icon size={16} className="text-[#94a3b8] group-hover:text-[#22d3ee]" />
+                    <span className="hidden xl:inline">{label}</span>
+                  </div>
+                  
+                  {activeSection === id && (
+                    <div className="absolute inset-0 bg-[#3b82f6]/10 rounded-xl" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Right Side - Hire Me + Menu Button */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              {/* Desktop Hire Me Button */}
+              <button
+                onClick={handleHireMeClick}
+                className="hidden md:flex relative group overflow-hidden bg-gradient-to-r from-[#3b82f6] to-[#22d3ee] text-[#f8fafc] px-4 lg:px-6 py-2 lg:py-3 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="flex items-center space-x-2">
-                  <Icon size={16} />
-                  <span>{label}</span>
+                  <Zap size={16} className="text-[#fbbf24]" />
+                  <span>Hire Me</span>
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </div>
-                
-                {activeSection === id && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-light-primary/10 to-light-secondary/10 dark:from-dark-primary/10 dark:to-dark-secondary/10 redblack:from-redblack-primary/10 redblack:to-redblack-primaryLight/10 rounded-xl"
-                    layoutId="activeTab"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-                )}
-                
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-light-primary/5 to-light-secondary/5 dark:from-dark-primary/5 dark:to-dark-secondary/5 redblack:from-redblack-primary/5 redblack:to-redblack-primaryLight/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  whileHover={{ scale: 1.02 }}
-                />
-              </motion.button>
-            ))}
-            
-            <motion.button
-              onClick={toggleTheme}
-              className="relative p-3 rounded-xl bg-gradient-to-br from-light-background/80 to-light-card dark:from-dark-background/80 dark:to-dark-card redblack:from-redblack-background/80 redblack:to-redblack-card text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary hover:from-light-primary/20 hover:to-light-secondary/20 dark:hover:from-dark-primary/20 dark:hover:to-dark-secondary/20 redblack:hover:from-redblack-primary/20 redblack:hover:to-redblack-primaryLight/20 transition-all duration-300 shadow-lg hover:shadow-xl"
-              initial={{ opacity: 0, rotate: -180 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              transition={{ duration: 0.6, delay: 2.9 }}
-              whileHover={{ scale: 1.1, rotate: 10 }}
-              whileTap={{ scale: 0.9 }}
-              title={
-                theme === 'light'
-                  ? 'Switch to Dark Mode'
-                  : theme === 'dark'
-                  ? 'Switch to Redblack Mode'
-                  : 'Switch to Light Mode'
-              }
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={theme}
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {theme === 'light' ? (
-                    <Moon size={20} />
-                  ) : theme === 'dark' ? (
-                    <Sun size={20} />
-                  ) : (
-                    <Sun size={20} />
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </motion.button>
-          </div>
+              </button>
 
-          <div className="md:hidden flex items-center space-x-4">
-            <motion.button
-              onClick={toggleTheme}
-              className="p-2 rounded-xl bg-light-background/80 dark:bg-dark-background/80 redblack:bg-redblack-background/80 text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary hover:bg-light-primary/20 dark:hover:bg-dark-primary/20 redblack:hover:bg-redblack-primary/20 transition-all duration-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.2 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={theme}
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-                </motion.div>
-              </AnimatePresence>
-            </motion.button>
-            
-            <motion.button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative p-2 rounded-xl text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary hover:text-light-primary dark:hover:text-dark-primary redblack:hover:text-redblack-primary hover:bg-light-background/50 dark:hover:bg-dark-background/50 redblack:hover:bg-redblack-background/50 transition-all duration-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.3 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={isMenuOpen ? 'close' : 'open'}
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </motion.div>
-              </AnimatePresence>
-            </motion.button>
+              {/* Mobile Hire Me Button */}
+              <button
+                onClick={handleHireMeClick}
+                className="md:hidden flex items-center space-x-1 bg-gradient-to-r from-[#3b82f6] to-[#22d3ee] text-[#f8fafc] px-3 py-2 rounded-lg font-semibold text-xs shadow-md hover:scale-105 transition-transform"
+              >
+                <Zap size={14} className="text-[#fbbf24]" />
+                <span>Hire</span>
+              </button>
+
+              {/* Mobile Menu Toggle - Only visible on mobile/tablet */}
+              <button
+                onClick={toggleMenu}
+                className="lg:hidden menu-button p-2.5 rounded-xl bg-[#3b82f6]/10 border border-[#1e293b]/50 text-[#f8fafc] hover:bg-[#22d3ee]/20 transition-all duration-300 shadow-sm hover:scale-110"
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMenuOpen}
+              >
+                <div className="relative w-5 h-5">
+                  <span
+                    className={`absolute block h-0.5 w-5 bg-current transition-all duration-300 ${
+                      isMenuOpen ? 'rotate-45 top-2' : 'top-1'
+                    }`}
+                  />
+                  <span
+                    className={`absolute block h-0.5 w-5 bg-current transition-all duration-300 ${
+                      isMenuOpen ? 'opacity-0' : 'top-2'
+                    }`}
+                  />
+                  <span
+                    className={`absolute block h-0.5 w-5 bg-current transition-all duration-300 ${
+                      isMenuOpen ? '-rotate-45 top-2' : 'top-3'
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
+      </nav>
 
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              className="md:hidden py-4 border-t border-light-textSecondary/20 dark:border-dark-textSecondary/20 redblack:border-redblack-textSecondary/20"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+      {/* Mobile Drawer Overlay */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Drawer Menu */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-[#0a0a0a]/95 backdrop-blur-md border-l border-[#1e293b]/50 shadow-2xl z-50 lg:hidden mobile-menu transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Drawer Header */}
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-[#1e293b]/50">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-[#3b82f6] rounded-xl flex items-center justify-center shadow-sm">
+                <Sparkles size={20} className="text-[#f8fafc]" />
+              </div>
+              <div>
+                <div className="text-lg font-bold text-[#f8fafc]">Muhammad</div>
+                <div className="text-xs text-[#94a3b8]">Usman</div>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 rounded-lg bg-[#1e293b]/50 text-[#94a3b8] hover:text-[#22d3ee] hover:bg-[#1e293b]/80 transition-colors"
+              aria-label="Close menu"
             >
-              {navItems.map(({ id, label, icon: Icon }, index) => (
-                <motion.button
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Mobile Hire Me CTA */}
+          <div className="p-4 sm:p-6 border-b border-[#1e293b]/50">
+            <button
+              onClick={handleHireMeClick}
+              className="w-full group relative overflow-hidden bg-gradient-to-r from-[#3b82f6] to-[#22d3ee] text-[#f8fafc] p-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <Star size={20} className="text-[#fbbf24]" />
+                <span className="text-lg">HIRE ME NOW</span>
+                <ArrowRight size={20} />
+              </div>
+            </button>
+          </div>
+
+          {/* Navigation Items */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 sm:p-6 space-y-2">
+              {navItems.map(({ id, label, icon: Icon, description }) => (
+                <button
                   key={id}
-                  onClick={() => {
-                    scrollToSection(id);
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-lg mx-2 mb-2 text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary hover:text-light-primary dark:hover:text-dark-primary redblack:hover:text-redblack-primary hover:bg-light-background/50 dark:hover:bg-dark-background/50 redblack:hover:bg-redblack-background/50 transition-all duration-300"
-                  initial={{ x: -50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.2, delay: index * 0.1 }}
-                  whileHover={{ x: 10, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleNavClick(id)}
+                  className={`w-full group relative overflow-hidden rounded-xl transition-all duration-300 ${
+                    activeSection === id
+                      ? 'bg-[#3b82f6]/10 border border-[#3b82f6]/30'
+                      : 'bg-[#1e293b]/50 border border-[#1e293b]/50 hover:bg-[#1e293b]/80 hover:border-[#22d3ee]/20'
+                  }`}
                 >
-                  <Icon size={18} />
-                  <span>{label}</span>
-                </motion.button>
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                        activeSection === id
+                          ? 'bg-[#3b82f6] text-[#f8fafc]'
+                          : 'bg-[#1e293b]/50 text-[#94a3b8] group-hover:text-[#22d3ee] group-hover:bg-[#1e293b]/80'
+                      }`}>
+                        <Icon size={18} />
+                      </div>
+                      <div className="text-left">
+                        <div className={`font-medium transition-colors ${
+                          activeSection === id ? 'text-[#f8fafc]' : 'text-[#94a3b8] group-hover:text-[#22d3ee]'
+                        }`}>
+                          {label}
+                        </div>
+                        <div className="text-xs text-[#94a3b8] mt-0.5">{description}</div>
+                      </div>
+                    </div>
+                    
+                    <ChevronRight 
+                      size={16} 
+                      className={`transition-all duration-300 group-hover:translate-x-1 ${
+                        activeSection === id ? 'text-[#3b82f6]' : 'text-[#94a3b8] group-hover:text-[#22d3ee]'
+                      }`}
+                    />
+                  </div>
+
+                  {/* Active indicator */}
+                  {activeSection === id && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#22d3ee]" />
+                  )}
+                </button>
               ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Drawer Footer */}
+          <div className="p-4 sm:p-6 border-t border-[#1e293b]/50">
+            <div className="text-center text-[#94a3b8] text-sm">
+              <div className="mb-2 font-medium text-[#f8fafc]">Muhammad Usman</div>
+              <div className="text-xs">MERN Stack Developer</div>
+            </div>
+            <div className="flex justify-center mt-4">
+              <div className="w-16 h-0.5 bg-[#3b82f6] rounded-full" />
+            </div>
+          </div>
+        </div>
       </div>
-    </motion.nav>
+    </>
   );
 };
 

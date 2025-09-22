@@ -1,58 +1,54 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Smartphone, Server, Globe, Award } from 'lucide-react';
-import { ThemeContext } from './ThemeContext';
 
 const Skills = () => {
-  const { theme } = useContext(ThemeContext);
-
   const skillCategories = [
     {
       title: 'Frontend Development',
       icon: Smartphone,
       skills: [
-        { name: 'React.js', level: 90, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Tailwind CSS', level: 95, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'JavaScript', level: 85, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'HTML5/CSS3', level: 90, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Redux Toolkit', level: 80, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Framer Motion', level: 75, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-      ],
+        { name: 'React.js', level: 90 },
+        { name: 'JavaScript (ES6+)', level: 85 },
+        { name: 'Tailwind CSS', level: 95 },
+        { name: 'Next.js', level: 80 },
+        { name: 'Redux Toolkit', level: 80 },
+      ]
     },
     {
       title: 'Backend Development',
       icon: Server,
       skills: [
-        { name: 'Node.js', level: 85, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Express.js', level: 90, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'MongoDB', level: 80, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'JWT Auth', level: 85, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'REST APIs', level: 90, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
+        { name: 'Node.js', level: 85 },
+        { name: 'Express.js', level: 90 },
+        { name: 'MongoDB', level: 80 },
+        { name: 'JWT Auth', level: 85 },
+        { name: 'REST APIs', level: 90 },
       ],
     },
     {
       title: 'Tools & Integration',
       icon: Globe,
       skills: [
-        { name: 'Git/GitHub', level: 85, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Cloudinary', level: 80, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Stripe Payment', level: 75, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Socket.IO', level: 70, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
-        { name: 'Vercel/Render', level: 85, color: 'from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight' },
+        { name: 'Git/GitHub', level: 85 },
+        { name: 'Cloudinary', level: 80 },
+        { name: 'Stripe Payment', level: 75 },
+        { name: 'Socket.IO', level: 70 },
+        { name: 'Vercel/Render', level: 85 },
       ],
     },
   ];
 
-  // Animation variants
+  // Animation variants with reduced durations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-        duration: 0.6
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
+        duration: 0.4
       }
     }
   };
@@ -68,7 +64,7 @@ const Skills = () => {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.5,
         ease: [0.25, 0.46, 0.45, 0.94]
       }
     }
@@ -83,9 +79,9 @@ const Skills = () => {
       scaleX: 1,
       opacity: 1,
       transition: {
-        duration: 1.2,
+        duration: 0.8,
         ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.3
+        delay: 0.2
       }
     }
   };
@@ -103,8 +99,8 @@ const Skills = () => {
       rotateX: 0,
       scale: 1,
       transition: {
-        duration: 0.8,
-        delay: i * 0.2,
+        duration: 0.5,
+        delay: i * 0.1,
         ease: "backOut"
       }
     }),
@@ -112,9 +108,9 @@ const Skills = () => {
       y: -10,
       rotateY: 5,
       scale: 1.02,
-      boxShadow: "0 25px 60px rgba(0,0,0,0.15)",
+      boxShadow: "0 10px 20px rgba(30, 41, 59, 0.2)",
       transition: {
-        duration: 0.4,
+        duration: 0.2,
         ease: "easeOut"
       }
     }
@@ -129,16 +125,16 @@ const Skills = () => {
       scale: 1,
       rotate: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: "backOut",
-        delay: 0.2
+        delay: 0.1
       }
     },
     hover: {
       scale: 1.2,
       rotate: 10,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
         ease: "easeOut"
       }
     }
@@ -153,9 +149,9 @@ const Skills = () => {
       width: `${level}%`,
       opacity: 1,
       transition: {
-        duration: 1.5,
+        duration: 1,
         ease: "easeOut",
-        delay: 0.3
+        delay: 0.2
       }
     })
   };
@@ -171,15 +167,15 @@ const Skills = () => {
       x: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
-        delay: 0.5 + i * 0.1,
+        duration: 0.4,
+        delay: 0.3 + i * 0.05,
         ease: "easeOut"
       }
     }),
     hover: {
       x: 5,
       transition: {
-        duration: 0.2
+        duration: 0.15
       }
     }
   };
@@ -195,8 +191,8 @@ const Skills = () => {
       y: 0,
       rotateY: 0,
       transition: {
-        duration: 0.7,
-        delay: i * 0.2,
+        duration: 0.5,
+        delay: i * 0.1,
         ease: "backOut"
       }
     }),
@@ -205,7 +201,7 @@ const Skills = () => {
       rotateY: 5,
       scale: 1.03,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
         ease: "easeOut"
       }
     }
@@ -235,7 +231,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-20 bg-light-background dark:bg-dark-background redblack:bg-redblack-background overflow-hidden">
+    <section id="skills" className="py-20 bg-[#0a0a0a] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -247,21 +243,21 @@ const Skills = () => {
         >
           <motion.h2
             variants={titleVariants}
-            className="text-4xl md:text-5xl font-bold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary mb-4"
+            className="text-4xl md:text-5xl font-bold text-[#f8fafc] font-poppins mb-4"
           >
             Technical Skills
           </motion.h2>
           <motion.div
             variants={gradientBarVariants}
-            className="w-24 h-1 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight mx-auto rounded-full"
+            className="w-24 h-1 bg-[#3b82f6] mx-auto rounded-full"
             style={{ transformOrigin: "center" }}
           />
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
             viewport={{ once: true }}
-            className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary mt-4 max-w-2xl mx-auto"
+            className="text-[#94a3b8] font-inter mt-4 max-w-2xl mx-auto"
           >
             Technologies and tools I use to bring ideas to life
           </motion.p>
@@ -275,7 +271,7 @@ const Skills = () => {
           variants={{
             visible: {
               transition: {
-                staggerChildren: 0.2
+                staggerChildren: 0.1
               }
             }
           }}
@@ -287,15 +283,15 @@ const Skills = () => {
               custom={categoryIndex}
               variants={cardVariants}
               whileHover="hover"
-              className="bg-light-card/80 dark:bg-dark-card/80 redblack:bg-redblack-card/80 rounded-2xl p-8 shadow-glass backdrop-blur-sm cursor-pointer group relative overflow-hidden"
+              className="bg-[#1e293b]/50 rounded-2xl p-8 shadow-sm border border-[#1e293b]/50 backdrop-blur-sm cursor-pointer group relative overflow-hidden"
               style={{ transformStyle: "preserve-3d" }}
             >
               {/* Background Gradient Animation */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-light-primary/5 to-light-secondary/5 dark:from-dark-primary/5 dark:to-dark-secondary/5 rounded-2xl"
+                className="absolute inset-0 bg-[#3b82f6]/10 rounded-2xl"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileHover={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.2 }}
               />
 
               {/* Header */}
@@ -303,18 +299,17 @@ const Skills = () => {
                 <motion.div
                   variants={iconVariants}
                   whileHover="hover"
-                  // variants={floatingVariants}
                   animate="animate"
-                  className="w-12 h-12 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary redblack:from-redblack-primary redblack:to-redblack-primaryLight rounded-full flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 bg-[#3b82f6] rounded-full flex items-center justify-center shadow-sm"
                 >
-                  <category.icon size={24} className="text-white" />
+                  <category.icon size={24} className="text-[#f8fafc]" />
                 </motion.div>
                 <motion.h3
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + categoryIndex * 0.1, duration: 0.6 }}
+                  transition={{ delay: 0.2 + categoryIndex * 0.05, duration: 0.4 }}
                   viewport={{ once: true }}
-                  className="text-xl font-bold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary"
+                  className="text-xl font-bold text-[#f8fafc] font-poppins"
                 >
                   {category.title}
                 </motion.h3>
@@ -328,7 +323,7 @@ const Skills = () => {
                 variants={{
                   visible: {
                     transition: {
-                      staggerChildren: 0.1
+                      staggerChildren: 0.05
                     }
                   }
                 }}
@@ -344,27 +339,27 @@ const Skills = () => {
                   >
                     <div className="flex justify-between items-center mb-2">
                       <motion.span
-                        className="text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary font-medium"
+                        className="text-[#f8fafc] font-medium font-inter"
                         whileHover={{ scale: 1.05, x: 3 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.15 }}
                       >
                         {skill.name}
                       </motion.span>
                       <motion.span
-                        className="text-sm text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary"
+                        className="text-sm text-[#94a3b8] font-inter"
                         initial={{ opacity: 0, scale: 0 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
+                        transition={{ delay: 0.4 + index * 0.05, duration: 0.3 }}
                         viewport={{ once: true }}
                       >
                         {skill.level}%
                       </motion.span>
                     </div>
                     
-                    <div className="w-full bg-light-textSecondary/20 dark:bg-dark-textSecondary/20 redblack:bg-redblack-textSecondary/20 rounded-full h-3 overflow-hidden relative">
+                    <div className="w-full bg-[#1e293b]/50 rounded-full h-3 overflow-hidden relative">
                       {/* Background shimmer effect */}
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        className="absolute inset-0 bg-[#1e293b]/20"
                         animate={{
                           x: [-100, 300],
                         }}
@@ -380,22 +375,22 @@ const Skills = () => {
                       <motion.div
                         custom={skill.level}
                         variants={skillBarVariants}
-                        className={`h-full bg-gradient-to-r ${skill.color} rounded-full relative overflow-hidden`}
+                        className="h-full bg-[#3b82f6] rounded-full relative overflow-hidden"
                         whileHover={{
                           scaleY: 1.2,
-                          boxShadow: "0 0 20px rgba(var(--primary), 0.4)",
-                          transition: { duration: 0.3 }
+                          boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)",
+                          transition: { duration: 0.2 }
                         }}
                       >
                         {/* Glow effect */}
                         <motion.div
-                          className="absolute inset-0 bg-white/30"
+                          className="absolute inset-0 bg-[#22d3ee]/30"
                           animate={{
                             x: [-20, 20],
                             opacity: [0.5, 0.8, 0.5]
                           }}
                           transition={{
-                            duration: 1.5,
+                            duration: 1,
                             repeat: Infinity,
                             ease: "easeInOut"
                           }}
@@ -408,7 +403,7 @@ const Skills = () => {
 
               {/* Floating decoration */}
               <motion.div
-                className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary rounded-full opacity-20"
+                className="absolute -top-2 -right-2 w-8 h-8 bg-[#3b82f6] rounded-full opacity-20"
                 animate={{
                   scale: [1, 1.2, 1],
                   rotate: [0, 180, 360],
@@ -433,7 +428,7 @@ const Skills = () => {
         >
           <motion.h3
             variants={titleVariants}
-            className="text-2xl font-bold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary text-center mb-8"
+            className="text-2xl font-bold text-[#f8fafc] font-poppins text-center mb-8"
           >
             Certifications
           </motion.h3>
@@ -445,7 +440,7 @@ const Skills = () => {
             variants={{
               visible: {
                 transition: {
-                  staggerChildren: 0.3
+                  staggerChildren: 0.1
                 }
               }
             }}
@@ -456,13 +451,11 @@ const Skills = () => {
                 title: 'MERN Stack E-commerce Bootcamp',
                 provider: 'YouTube',
                 icon: Award,
-                color: 'from-light-error to-light-error dark:from-dark-error dark:to-dark-error redblack:from-redblack-error redblack:to-redblack-error',
               },
               {
                 title: 'Responsive Web Design',
                 provider: 'freeCodeCamp',
                 icon: Award,
-                color: 'from-light-success to-light-success dark:from-dark-success dark:to-dark-success redblack:from-redblack-success redblack:to-redblack-success',
               },
             ].map((cert, index) => (
               <motion.div
@@ -470,42 +463,42 @@ const Skills = () => {
                 custom={index}
                 variants={certificationVariants}
                 whileHover="hover"
-                className="bg-light-card/80 dark:bg-dark-card/80 redblack:bg-redblack-card/80 p-6 rounded-xl border border-light-textSecondary/20 dark:border-dark-textSecondary/20 redblack:border-redblack-textSecondary/20 shadow-glass backdrop-blur-sm cursor-pointer group relative overflow-hidden"
+                className="bg-[#1e293b]/50 p-6 rounded-xl border border-[#1e293b]/50 shadow-sm backdrop-blur-sm cursor-pointer group relative overflow-hidden"
                 style={{ transformStyle: "preserve-3d" }}
               >
                 {/* Background effect */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+                  className="absolute inset-0 bg-[#3b82f6]/10"
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                 />
 
                 <div className="flex items-center space-x-4 relative z-10">
                   <motion.div
-                    className={`w-12 h-12 bg-gradient-to-r ${cert.color} rounded-full flex items-center justify-center shadow-lg`}
+                    className="w-12 h-12 bg-[#3b82f6] rounded-full flex items-center justify-center shadow-sm"
                     variants={pulseVariants}
                     animate="animate"
                     whileHover={{
                       scale: 1.2,
                       rotate: 15,
-                      transition: { duration: 0.3 }
+                      transition: { duration: 0.2 }
                     }}
                   >
-                    <cert.icon size={24} className="text-white" />
+                    <cert.icon size={24} className="text-[#f8fafc]" />
                   </motion.div>
                   <div>
                     <motion.h4
-                      className="font-semibold text-light-textPrimary dark:text-dark-textPrimary redblack:text-redblack-textPrimary"
+                      className="font-semibold text-[#f8fafc] font-poppins"
                       whileHover={{ x: 5, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.15 }}
                     >
                       {cert.title}
                     </motion.h4>
                     <motion.p
-                      className="text-light-textSecondary dark:text-dark-textSecondary redblack:text-redblack-textSecondary"
+                      className="text-[#94a3b8] font-inter"
                       whileHover={{ x: 5, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.15 }}
                     >
                       {cert.provider}
                     </motion.p>
@@ -514,7 +507,7 @@ const Skills = () => {
 
                 {/* Corner decoration */}
                 <motion.div
-                  className="absolute top-2 right-2 w-3 h-3 bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary rounded-full"
+                  className="absolute top-2 right-2 w-3 h-3 bg-[#22d3ee] rounded-full"
                   animate={{
                     scale: [1, 1.5, 1],
                     opacity: [0.7, 1, 0.7]

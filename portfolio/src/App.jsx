@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider } from './components/ThemeContext'; // ✅ use the ThemeProvider
+import { ThemeProvider } from './components/ThemeContext';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -47,32 +47,56 @@ const App = () => {
 
     return () => observers.forEach((observer) => observer.disconnect());
   }, []);
-  <ToastContainer
-  position="top-right"
-  autoClose={5000}
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  rtl={false}
-  pauseOnFocusLoss
-  draggable
-  pauseOnHover
-  theme="colored"
-/>
 
   return (
-    
-    <ThemeProvider> {/* ✅ wrap everything here */}
+    <ThemeProvider>
       <div className="relative">
         <Navigation activeSection={activeSection} scrollToSection={scrollToSection} />
-        <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Education />
-        <Contact />
+        
+        {/* Add id attributes to each section */}
+       <div id="hero">
+  <Hero scrollToSection={scrollToSection} />
+</div>
+        
+        <div id="about">
+          <About />
+        </div>
+        
+        <div id="skills">
+          <Skills />
+        </div>
+        
+        <div id="experience">
+          <Experience />
+        </div>
+        
+        <div id="projects">
+          <Projects />
+        </div>
+        
+        <div id="education">
+          <Education />
+        </div>
+        
+        <div id="contact">
+          <Contact />
+        </div>
+        
         <Footer scrollToSection={scrollToSection} />
+        
+        {/* Toast Container moved inside JSX */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </div>
     </ThemeProvider>
   );
